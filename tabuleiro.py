@@ -12,6 +12,7 @@ class Tabuleiro:
        
         
     def tem_campeao(self):
+
         # Verifica as colunas
         for c in range(0,3):
             soma = self.matriz[0][c] + self.matriz[1][c] + self.matriz[2][c]
