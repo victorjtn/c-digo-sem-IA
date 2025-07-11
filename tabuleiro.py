@@ -1,41 +1,56 @@
 # -*- coding: utf-8 -*-
 
+# -*- coding: utf-8 -*-
+
 class Tabuleiro:
     DESCONHECIDO = 0
     JOGADOR_0 = 1
     JOGADOR_X = 4
 
     def __init__(self):
-        self.matriz = [ [Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO], 
-                        [Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO],
-                        [Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO]]
-       
-        
-    def tem_campeao(self):
+        self.matriz = [
+            [Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO],
+            [Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO],
+            [Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO, Tabuleiro.DESCONHECIDO]
+        ]
 
-        # Verifica as colunas
-        for c in range(0,3):
-            soma = self.matriz[0][c] + self.matriz[1][c] + self.matriz[2][c]
-            if soma == 3:
-                return Tabuleiro.JOGADOR_0
-            elif soma == 12:
-                return Tabuleiro.JOGADOR_X
-        # Verifica as linhas
-        for l in range(0,3):
-            soma = self.matriz[l][0] + self.matriz[l][1] + self.matriz[l][2]
-            if soma == 3:
-                return Tabuleiro.JOGADOR_0
-            elif soma == 12:
-                return Tabuleiro.JOGADOR_X
-        # Verifica as diagonais
-        soma = self.matriz[0][0] + self.matriz[1][1] + self.matriz[2][2]
-        if soma == 3:
-            return Tabuleiro.JOGADOR_0
-        elif soma == 12:
-            return Tabuleiro.JOGADOR_X
-        soma = self.matriz[0][2] + self.matriz[1][1] + self.matriz[2][0]
-        if soma == 3:
-            return Tabuleiro.JOGADOR_0
-        elif soma == 12:
-            return Tabuleiro.JOGADOR_X
+    def tem_campeao(self):
+        # Verifica linhas
+        for linha in self.matriz:
+            if linha[0] == linha[1] == linha[2] != Tabuleiro.DESCONHECIDO:
+                return linha[0]
+
+        # Verifica colunas
+        for coluna in range(3):
+            if (
+                self.matriz[0][coluna] == self.matriz[1][coluna] == self.matriz[2][coluna]
+                and self.matriz[0][coluna] != Tabuleiro.DESCONHECIDO
+            ):
+                return self.matriz[0][coluna] 
+
+        # Verifica diagonais
+        if (
+            self.matriz[0][0] == self.matriz[1][1] == self.matriz[2][2]
+            and self.matriz[0][0] != Tabuleiro.DESCONHECIDO
+        ):
+            return self.matriz[0][0]  
+
+        if (
+            self.matriz[0][2] == self.matriz[1][1] == self.matriz[2][0]
+            and self.matriz[0][2] != Tabuleiro.DESCONHECIDO
+        ):
+            return self.matriz[0][2]  
+
+
         return Tabuleiro.DESCONHECIDO
+
+    def jogo_empatado(self):
+        # Verifica se todas as células estão preenchidas e não há vencedor
+        if self.tem_campeao() != Tabuleiro.DESCONHECIDO:
+            return False  
+
+        for linha in self.matriz:
+            if Tabuleiro.DESCONHECIDO in linha:
+                return False 
+
+        return True 
